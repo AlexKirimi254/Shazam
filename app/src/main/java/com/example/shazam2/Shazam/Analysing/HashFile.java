@@ -1,6 +1,5 @@
 package com.example.shazam2.Shazam.Analysing;
 
-import com.example.shazam2.Shazam.DataBase.Processing.AddingMusic;
 import com.example.shazam2.Shazam.fingerprint.AudioFile;
 import com.example.shazam2.Shazam.fingerprint.hash.peak.HashedPeak;
 
@@ -106,27 +105,6 @@ public class HashFile {
 
     public boolean contains(String hashPeak){
         return hashes.contains(hashPeak);
-    }
-
-    public void save() throws Exception {
-        if(file.exists()) file.delete();
-
-        AddingMusic music = new AddingMusic(title,author,2000,album);
-
-        PrintWriter writer = new PrintWriter(file);
-
-        writer.println(title);
-        writer.println(author);
-        writer.println(year);
-        writer.println(album);
-
-        music.add(hashes,times);
-        for(String hash : hashes){
-            writer.println(hash);
-
-        }
-
-        writer.close();
     }
 
     public String[] getHashes(){

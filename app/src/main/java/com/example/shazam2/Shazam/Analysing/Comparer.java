@@ -127,18 +127,22 @@ public class Comparer {
 
                 int avrga = (sum - max) / (simplifiedMusic.size() - 1);
 
-                if(max < avrga * 1.25 ){
+                if(max < avrga * 1.66 ){
                     throw new AnalyseException("");
                 }
 
             }
 
-            return simplifiedMusic.get(maxN).getTitle() + " srednia:"+ avrg+" max:"+max;
+            ComparerTime time = new ComparerTime(this);
+            int maxtime = time.maxTime(true,state,simplifiedMusic.get(maxN).getTitle(),start);
+            int dettime = time.detectTime(true,state,simplifiedMusic.get(maxN).getTitle(),start);
+
+            return "'"+simplifiedMusic.get(maxN).getTitle() + "' \n Rok:"+simplifiedMusic.get(maxN).getYear()+" \n Autor:"+simplifiedMusic.get(maxN).getAuthor()+"\n Czas trwania: "+maxtime+"s \n Czas "+dettime+" s\n \n Okladka:"+simplifiedMusic.get(maxN).getAlbum();
 
 
         }catch (AnalyseException err){
             if(err.toString().length()!=0) System.out.println("Błąd: "+err.toString());
-            return "";
+            return "Not detected";
         }
 
 
