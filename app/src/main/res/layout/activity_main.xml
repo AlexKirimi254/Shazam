@@ -10,20 +10,44 @@
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:rotation="0"
+        android:rotationX="0"
+        android:rotationY="0"
+        android:text="Gotowy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.73" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="236dp"
+        android:layout_width="142dp"
+        android:layout_height="138dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="220dp"
+        android:background="?android:attr/windowSplashScreenIconBackgroundColor"
+        android:backgroundTint="@color/material_dynamic_neutral_variant40"
+        android:contentDescription="@string/app_name"
+        android:insetBottom="6dp"
         android:onClick="analyse"
-        android:text="Run"
+        android:paddingLeft="52dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:icon="@android:drawable/ic_menu_search"
+        app:iconPadding="50dp"
+        app:iconTint="@color/black"
+        app:iconTintMode="src_in"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Large.Inverse"
+        android:layout_width="103dp"
+        android:layout_height="102dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="240dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

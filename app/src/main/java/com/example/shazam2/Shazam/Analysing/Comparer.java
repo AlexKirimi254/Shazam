@@ -137,12 +137,12 @@ public class Comparer {
             int maxtime = time.maxTime(true,state,simplifiedMusic.get(maxN).getTitle(),start);
             int dettime = time.detectTime(true,state,simplifiedMusic.get(maxN).getTitle(),start);
 
-            return "'"+simplifiedMusic.get(maxN).getTitle() + "' \n Rok:"+simplifiedMusic.get(maxN).getYear()+" \n Autor:"+simplifiedMusic.get(maxN).getAuthor()+"\n Czas trwania: "+maxtime+"s \n Czas "+dettime+" s\n \n Okladka:"+simplifiedMusic.get(maxN).getAlbum();
+            return "Wykryto: \n '"+simplifiedMusic.get(maxN).getTitle() + "' \n Rok:"+simplifiedMusic.get(maxN).getYear()+" \n Autor:"+simplifiedMusic.get(maxN).getAuthor()+"\n Czas trwania: "+maxtime+"s \n Czas "+dettime+" s\n \n Okladka:"+simplifiedMusic.get(maxN).getAlbum();
 
 
         }catch (AnalyseException err){
             if(err.toString().length()!=0) System.out.println("Błąd: "+err.toString());
-            return "Not detected";
+            return "none";
         }
 
 

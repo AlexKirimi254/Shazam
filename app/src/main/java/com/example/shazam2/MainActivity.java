@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import static android.Manifest.permission.INTERNET;
@@ -27,6 +28,7 @@ import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 import android.content.pm.PackageManager;
+import android.widget.Toast;
 
 
 import com.example.shazam2.Shazam.Analysing.Comparer;
@@ -45,6 +47,7 @@ import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Instant;
 
@@ -84,23 +87,32 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         TextView tex = (TextView) findViewById(R.id.text);
+        ProgressBar pro = (ProgressBar) findViewById(R.id.progressBar2);
 
+        pro.setVisibility(View.INVISIBLE);
     }
 
 
     public void analyse(View view){
 
+
         File directory = MainActivity.this.getFilesDir();
         File file = new File(directory, "recording.wav");
 
+        ProgressBar pro = (ProgressBar) findViewById(R.id.progressBar2);
+
         if(checkPermission()) {
+
+            pro.setVisibility(View.VISIBLE);
+
             TextView text = (TextView) findViewById(R.id.text);
             Button but = (Button) findViewById(R.id.button);
 
+            but.setVisibility(View.INVISIBLE);
             RecordWavMaster RWM = new RecordWavMaster(directory.getPath());
 
             but.setEnabled(false);
-            text.setText("Recording ...");
+            text.setText("Odsłuchiwanie ...");
             try {
                 file.createNewFile();
 
@@ -109,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         RWM.recordWavStop();
-                        text.setText("Analyse");
+                        text.setText("Analiza nagrania");
 
                         but.setEnabled(true);
 
@@ -133,11 +145,12 @@ public class MainActivity extends AppCompatActivity {
 
 
             }catch (FileNotFoundException e){
-                text.setText("Error");
+
+                showDialog("Wystąpił nieoczekiwany błąd, skontaktuj się z producentem aplikacji.");
             } catch (IOException e) {
-                text.setText("Error");
+                showDialog("Inna aplikacja wywołuje konflikt. Wyłącz wszystkie inne aplikacje i spróbuj ponownie");
             } catch (Exception e) {
-                text.setText("Error");
+                showDialog("Błąd analizy utworu. Spróbuj ponownie");
             }
 
 
@@ -149,7 +162,36 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    class DataBase extends AsyncTask<Void, Void, Void> {
+    void showDialog(String wiadomosc){
+
+
+        TextView vie = (TextView) findViewById(R.id.text);
+        ProgressBar pro = (ProgressBar) findViewById(R.id.progressBar2);
+        Button but = (Button) findViewById(R.id.button);
+
+        AlertDialog.Builder builder =  new AlertDialog.Builder(this);
+        builder.setMessage(wiadomosc) .setTitle("Błąd");
+
+        //Setting message manually and performing action on button click
+        builder.setMessage(wiadomosc)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        //Creating dialog box
+        AlertDialog alert = builder.create();
+        //Setting the title manually
+        alert.setTitle("Błąd");
+        alert.show();
+
+
+        but.setVisibility(View.VISIBLE);
+        pro.setVisibility(View.INVISIBLE);
+    }
+    public class DataBase extends AsyncTask<Void, Void, Void> {
 
         String records = "",error="";
         String result;
@@ -187,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
             }
             catch(Exception e)
             {
-                error = e.toString();
+                error = "S";
             }
 
             return null;
@@ -196,12 +238,20 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             TextView vie = (TextView) findViewById(R.id.text);
-            if(error.equals("")){
-                vie.setText(result);
+            ProgressBar pro = (ProgressBar) findViewById(R.id.progressBar2);
+            Button but = (Button) findViewById(R.id.button);
 
+            vie.setText("Gotowość");
+
+            if(error.equals("")){
+                if(result.equals("none")) showDialog("Podczas odsłuchiwania nie wykryto żadnego utworu!");
+                    else vie.setText(result);
             }else {
-                vie.setText(error);
+                showDialog("Połączenie z bazą danych zostało zakłócone. Sprawdź połączenie internetowe i spróbuj ponownie");
             }
+
+            but.setVisibility(View.VISIBLE);
+            pro.setVisibility(View.INVISIBLE);
             super.onPostExecute(aVoid);
         }
     }
