@@ -20,7 +20,9 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import static android.Manifest.permission.INTERNET;
@@ -50,6 +52,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Instant;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -90,8 +94,16 @@ public class MainActivity extends AppCompatActivity {
         ProgressBar pro = (ProgressBar) findViewById(R.id.progressBar2);
 
         pro.setVisibility(View.INVISIBLE);
-    }
 
+        ImageView analysing = (ImageView) findViewById(R.id.analysing);
+        ImageView listening = (ImageView) findViewById(R.id.listening);
+
+
+        analysing.setVisibility(View.INVISIBLE);
+        listening.setVisibility(View.INVISIBLE);
+
+    }
+    int mtim = 10;
 
     public void analyse(View view){
 
@@ -102,21 +114,48 @@ public class MainActivity extends AppCompatActivity {
         ProgressBar pro = (ProgressBar) findViewById(R.id.progressBar2);
 
         if(checkPermission()) {
+            ImageView analysing = (ImageView) findViewById(R.id.analysing);
+            ImageView listening = (ImageView) findViewById(R.id.listening);
+
+
+            listening.setVisibility(View.VISIBLE);
+            analysing.setVisibility(View.INVISIBLE);
 
             pro.setVisibility(View.VISIBLE);
 
             TextView text = (TextView) findViewById(R.id.text);
             Button but = (Button) findViewById(R.id.button);
+            Switch swch = (Switch) findViewById(R.id.czas);
+
 
             but.setVisibility(View.INVISIBLE);
             RecordWavMaster RWM = new RecordWavMaster(directory.getPath());
 
+            mtim = 10;
+
             but.setEnabled(false);
-            text.setText("Odsłuchiwanie ...");
             try {
+
                 file.createNewFile();
 
                 RWM.recordWavStart();
+
+                Handler time = new Handler();
+                text.setText("10 s");
+                Runnable task = new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mtim>1) {
+                            mtim--;
+                            text.setText(mtim + " s");
+
+                            time.postDelayed(this,1000);
+                        }
+                    }
+                };
+
+                time.postDelayed(task,1000);
+
                 Runnable r = new Runnable() {
                     @Override
                     public void run() {
@@ -125,15 +164,21 @@ public class MainActivity extends AppCompatActivity {
 
                         but.setEnabled(true);
 
+
+                        listening.setVisibility(View.INVISIBLE);
+                        analysing.setVisibility(View.VISIBLE);
+
                         try {
                             record = new ShzazamRecorder();
                             record.listen(file.getPath());
 
                             DataBase base = new DataBase();
+                            base.wykrywajczas = swch.isChecked();
+
                             base.execute();
 
                         }catch (Exception err){
-                            text.setText(err.getMessage());
+                            showDialog("Błąd analizy utworu. Spróbuj nagrać go ponownie.");
                         }
 
                     }
@@ -188,11 +233,20 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
 
 
+        ImageView analysing = (ImageView) findViewById(R.id.analysing);
+        ImageView listening = (ImageView) findViewById(R.id.listening);
+
+
+        analysing.setVisibility(View.INVISIBLE);
+        listening.setVisibility(View.INVISIBLE);
+
+
         but.setVisibility(View.VISIBLE);
         pro.setVisibility(View.INVISIBLE);
     }
     public class DataBase extends AsyncTask<Void, Void, Void> {
 
+        public boolean wykrywajczas;
         String records = "",error="";
         String result;
         @RequiresApi(api = Build.VERSION_CODES.O)
@@ -213,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
                 Statement state = connection.createStatement();
 
                 boolean success = false;
-                result = compare.compare(true, state,start);
+                result = compare.compare(wykrywajczas, state,start);
 
 
             }
@@ -231,6 +285,9 @@ public class MainActivity extends AppCompatActivity {
             ProgressBar pro = (ProgressBar) findViewById(R.id.progressBar2);
             Button but = (Button) findViewById(R.id.button);
 
+            ImageView analysing = (ImageView) findViewById(R.id.analysing);
+            ImageView listening = (ImageView) findViewById(R.id.listening);
+
             vie.setText("Gotowość");
 
             if(error.equals("")){
@@ -242,6 +299,11 @@ public class MainActivity extends AppCompatActivity {
 
             but.setVisibility(View.VISIBLE);
             pro.setVisibility(View.INVISIBLE);
+
+
+            listening.setVisibility(View.INVISIBLE);
+            analysing.setVisibility(View.INVISIBLE);
+
             super.onPostExecute(aVoid);
         }
     }

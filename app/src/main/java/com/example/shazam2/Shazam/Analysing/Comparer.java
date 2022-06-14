@@ -79,7 +79,7 @@ public class Comparer {
 
     }
 
-    public String compare(boolean isConnected, Statement state, Instant start) throws SQLException{
+    public String compare(boolean wykrywajCzas, Statement state, Instant start) throws SQLException{
 
         sum = 0;
         max = 0;
@@ -109,13 +109,15 @@ public class Comparer {
 
             simplifiedMusic = new HashFile(maxN+1, state);
 
+            if(wykrywajCzas) {
+                ComparerTime time = new ComparerTime(this);
+                int maxtime = time.maxTime(true, state, simplifiedMusic.getTitle(), start);
+                int dettime = time.detectTime(true, state, simplifiedMusic.getTitle(), start);
 
-            ComparerTime time = new ComparerTime(this);
-            int maxtime = time.maxTime(true,state,simplifiedMusic.getTitle(),start);
-            int dettime = time.detectTime(true,state,simplifiedMusic.getTitle(),start);
-
-            return "Wykryto: \n '"+simplifiedMusic.getTitle() + "' \n Rok:"+simplifiedMusic.getYear()+" \n Autor:"+simplifiedMusic.getAuthor()+"\n Czas trwania: "+maxtime+"s \n Czas "+dettime+" s\n \n Okladka:"+simplifiedMusic.getAlbum();
-
+                return "Wykryto: \n '" + simplifiedMusic.getTitle() + "' \n Rok:" + simplifiedMusic.getYear() + " \n Autor:" + simplifiedMusic.getAuthor() + "\n Czas trwania: " + maxtime + "s \n Czas " + dettime + " s\n \n Okladka:" + simplifiedMusic.getAlbum();
+            }else{
+                return "Wykryto: \n '" + simplifiedMusic.getTitle() + "' \n Rok:" + simplifiedMusic.getYear() + " \n Autor:" + simplifiedMusic.getAuthor() + " \n \n Okladka:" + simplifiedMusic.getAlbum();
+            }
 
         }catch (AnalyseException err){
             if(err.toString().length()!=0) System.out.println("Błąd: "+err.toString());
@@ -124,6 +126,5 @@ public class Comparer {
 
 
     }
-
 
 }
