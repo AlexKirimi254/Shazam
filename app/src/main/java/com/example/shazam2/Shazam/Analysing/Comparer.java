@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Comparer {
-    private ArrayList<HashFile> simplifiedMusic = new ArrayList<>();
+    private HashFile simplifiedMusic;
     private ArrayList<Integer> counterMusic = new ArrayList<>();
     private AudioFile recordFile;
 
@@ -32,12 +32,14 @@ public class Comparer {
 
     int maxId= 0;
 
+    int count = 0;
+
     public Comparer(){
 
     }
 
     public void addMusic(HashFile objFile){
-        simplifiedMusic.add(objFile);
+        simplifiedMusic = objFile;
         counterMusic.add(0);
     }
 
@@ -72,32 +74,9 @@ public class Comparer {
 
             sum += value;
             firstread = true;
+            count++;
         }
 
-    }
-
-    public void analyseOffline() throws AnalyseException{
-        for (HashFile file : simplifiedMusic) {
-
-            for (String hash : peaks) {
-                if (file.contains(hash)) {
-                    int number = counterMusic.get(n);
-                    number++;
-                    counterMusic.set(n, number);
-                }
-            }
-
-            if (max < counterMusic.get(n)) {
-                max = counterMusic.get(n);
-                maxN = n;
-            }
-
-            sum += counterMusic.get(n);
-
-            n++;
-
-
-        }
     }
 
     public String compare(boolean isConnected, Statement state, Instant start) throws SQLException{
@@ -112,20 +91,15 @@ public class Comparer {
 
 
 
-            if(isConnected) {
-
-                onlineAnalyse(state);
-
-            }else {
-                analyseOffline();
-            }
-
-            int avrg = sum/simplifiedMusic.size();
-
-            if(simplifiedMusic.size()>0) {
+            onlineAnalyse(state);
 
 
-                int avrga = (sum - max) / (simplifiedMusic.size() - 1);
+            int avrg = sum/count;
+
+            if(count>0) {
+
+
+                int avrga = (sum - max) / (count - 1);
 
                 if(max < avrga * 1.66 ){
                     throw new AnalyseException("");
@@ -133,11 +107,14 @@ public class Comparer {
 
             }
 
-            ComparerTime time = new ComparerTime(this);
-            int maxtime = time.maxTime(true,state,simplifiedMusic.get(maxN).getTitle(),start);
-            int dettime = time.detectTime(true,state,simplifiedMusic.get(maxN).getTitle(),start);
+            simplifiedMusic = new HashFile(maxN+1, state);
 
-            return "Wykryto: \n '"+simplifiedMusic.get(maxN).getTitle() + "' \n Rok:"+simplifiedMusic.get(maxN).getYear()+" \n Autor:"+simplifiedMusic.get(maxN).getAuthor()+"\n Czas trwania: "+maxtime+"s \n Czas "+dettime+" s\n \n Okladka:"+simplifiedMusic.get(maxN).getAlbum();
+
+            ComparerTime time = new ComparerTime(this);
+            int maxtime = time.maxTime(true,state,simplifiedMusic.getTitle(),start);
+            int dettime = time.detectTime(true,state,simplifiedMusic.getTitle(),start);
+
+            return "Wykryto: \n '"+simplifiedMusic.getTitle() + "' \n Rok:"+simplifiedMusic.getYear()+" \n Autor:"+simplifiedMusic.getAuthor()+"\n Czas trwania: "+maxtime+"s \n Czas "+dettime+" s\n \n Okladka:"+simplifiedMusic.getAlbum();
 
 
         }catch (AnalyseException err){

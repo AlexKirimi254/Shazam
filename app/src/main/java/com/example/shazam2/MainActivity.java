@@ -211,16 +211,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                 Statement state = connection.createStatement();
-                GetMusicList list = new GetMusicList(state);
-                int[] samplesFiles = list.musicIds();
-
-                for (int file : samplesFiles) {
-
-                    HashFile hfh = new HashFile(file, state);
-
-                    compare.addMusic(hfh);
-
-                }
 
                 boolean success = false;
                 result = compare.compare(true, state,start);
