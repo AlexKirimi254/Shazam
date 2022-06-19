@@ -8,8 +8,11 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
@@ -39,12 +42,15 @@ import com.example.shazam2.Shazam.Audio.ShzazamRecorder;
 import com.example.shazam2.Shazam.DataBase.LoginData;
 import com.example.shazam2.Shazam.DataBase.Processing.GetMusicList;
 
+import org.w3c.dom.Text;
+
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -54,6 +60,7 @@ import java.sql.Statement;
 import java.time.Instant;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -102,11 +109,26 @@ public class MainActivity extends AppCompatActivity {
         analysing.setVisibility(View.INVISIBLE);
         listening.setVisibility(View.INVISIBLE);
 
+        TextView title = (TextView) findViewById(R.id.title);
+        TextView prop = (TextView) findViewById(R.id.prop);
+        ImageView bar = (ImageView) findViewById(R.id.pasek);
+
+        bar.setVisibility(View.INVISIBLE);
+        title.setVisibility(View.INVISIBLE);
+        prop.setVisibility(View.INVISIBLE);
+
+
     }
     int mtim = 10;
 
     public void analyse(View view){
+        TextView title = (TextView) findViewById(R.id.title);
+        TextView prop = (TextView) findViewById(R.id.prop);
+        ImageView bar = (ImageView) findViewById(R.id.pasek);
 
+        bar.setVisibility(View.INVISIBLE);
+        title.setVisibility(View.INVISIBLE);
+        prop.setVisibility(View.INVISIBLE);
 
         File directory = MainActivity.this.getFilesDir();
         File file = new File(directory, "recording.wav");
@@ -249,6 +271,9 @@ public class MainActivity extends AppCompatActivity {
         public boolean wykrywajczas;
         String records = "",error="";
         String result;
+        String title;
+        String url;
+
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
 
@@ -269,6 +294,8 @@ public class MainActivity extends AppCompatActivity {
                 boolean success = false;
                 result = compare.compare(wykrywajczas, state,start);
 
+                title = compare.getTitle();
+                url = compare.getAlbum();
 
             }
             catch(Exception e)
@@ -284,6 +311,10 @@ public class MainActivity extends AppCompatActivity {
             TextView vie = (TextView) findViewById(R.id.text);
             ProgressBar pro = (ProgressBar) findViewById(R.id.progressBar2);
             Button but = (Button) findViewById(R.id.button);
+            ImageView bar = (ImageView) findViewById(R.id.pasek);
+
+            TextView title = (TextView) findViewById(R.id.title);
+            TextView prop = (TextView) findViewById(R.id.prop);
 
             ImageView analysing = (ImageView) findViewById(R.id.analysing);
             ImageView listening = (ImageView) findViewById(R.id.listening);
@@ -292,10 +323,22 @@ public class MainActivity extends AppCompatActivity {
 
             if(error.equals("")){
                 if(result.equals("none")) showDialog("Podczas odsłuchiwania nie wykryto żadnego utworu!");
-                    else vie.setText(result);
+                    else {
+                    vie.setText("Gotowość");
+
+                    prop.setText(this.result);
+                    title.setText(this.title);
+
+
+                    title.setVisibility(View.VISIBLE);
+                    bar.setVisibility(View.VISIBLE);
+                    prop.setVisibility(View.VISIBLE);
+                }
+
             }else {
                 showDialog("Połączenie z bazą danych zostało zakłócone. Sprawdź połączenie internetowe i spróbuj ponownie");
             }
+
 
             but.setVisibility(View.VISIBLE);
             pro.setVisibility(View.INVISIBLE);

@@ -101,7 +101,7 @@ public class Comparer {
 
                 int avrga = (sum - max) / (count - 1);
 
-                if(max < avrga * 1.66 ){
+                if(max < avrga * 1.1 ){
                     throw new AnalyseException("");
                 }
 
@@ -114,9 +114,9 @@ public class Comparer {
                 int maxtime = time.maxTime(true, state, simplifiedMusic.getTitle(), start);
                 int dettime = time.detectTime(true, state, simplifiedMusic.getTitle(), start);
 
-                return "Wykryto: \n '" + simplifiedMusic.getTitle() + "' \n Rok:" + simplifiedMusic.getYear() + " \n Autor:" + simplifiedMusic.getAuthor() + "\n Czas trwania: " + maxtime + "s \n Czas " + dettime + " s\n \n Okladka:" + simplifiedMusic.getAlbum();
+                return " Rok:" + simplifiedMusic.getYear() + " \n Autor:" + simplifiedMusic.getAuthor() + "\n Czas trwania: " + maxtime + "s \n Czas " + dettime + "s";
             }else{
-                return "Wykryto: \n '" + simplifiedMusic.getTitle() + "' \n Rok:" + simplifiedMusic.getYear() + " \n Autor:" + simplifiedMusic.getAuthor() + " \n \n Okladka:" + simplifiedMusic.getAlbum();
+                return " Rok:" + simplifiedMusic.getYear() + " \n Autor:" + simplifiedMusic.getAuthor();
             }
 
         }catch (AnalyseException err){
@@ -127,4 +127,11 @@ public class Comparer {
 
     }
 
+    public String getTitle(){
+        return simplifiedMusic.getTitle();
+    }
+
+    public String getAlbum(){
+        return simplifiedMusic.getAlbum();
+    }
 }

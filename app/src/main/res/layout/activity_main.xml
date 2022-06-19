@@ -6,6 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="479dp"
+        android:layout_height="101dp"
+        android:layout_marginTop="648dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/progress_horizontal" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="363dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/progress_horizontal" />
+
+    <Switch
+        android:id="@+id/czas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="664dp"
+        android:minHeight="48dp"
+        android:text="Wykrywaj czas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
@@ -19,57 +49,14 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.73" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="63dp"
-        android:layout_height="59dp"
-        android:layout_marginStart="172dp"
-        android:layout_marginTop="260dp"
-        android:background="@color/material_dynamic_neutral30"
-        android:backgroundTint="@color/material_dynamic_neutral_variant40"
-        android:contentDescription="@string/app_name"
-        android:ellipsize="start"
-        android:foreground="@android:drawable/editbox_dropdown_dark_frame"
-        android:insetBottom="6dp"
-        android:onClick="analyse"
-        android:paddingLeft="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:icon="@android:drawable/ic_menu_search"
-        app:iconPadding="50dp"
-        app:iconTint="@color/material_dynamic_primary100"
-        app:iconTintMode="src_in"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/progressBar2"
-        style="@android:style/Widget.Holo.Light.ProgressBar.Large.Inverse"
-        android:layout_width="103dp"
-        android:layout_height="102dp"
-        android:layout_marginStart="152dp"
-        android:layout_marginTop="240dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Switch
-        android:id="@+id/czas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="160dp"
-        android:minHeight="48dp"
-        android:text="Wykrywaj czas"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintVertical_bias="0.022" />
 
     <ImageView
         android:id="@+id/listening"
         android:layout_width="49dp"
         android:layout_height="55dp"
-        android:layout_marginStart="180dp"
-        android:layout_marginTop="264dp"
+        android:layout_marginStart="184dp"
+        android:layout_marginTop="640dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_btn_speak_now" />
@@ -78,10 +65,71 @@
         android:id="@+id/analysing"
         android:layout_width="48dp"
         android:layout_height="56dp"
-        android:layout_marginStart="180dp"
-        android:layout_marginTop="264dp"
+        android:layout_marginStart="184dp"
+        android:layout_marginTop="640dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?android:attr/actionModeFindDrawable" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Large.Inverse"
+        android:layout_width="103dp"
+        android:layout_height="102dp"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="616dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="63dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="176dp"
+        android:layout_marginTop="640dp"
+        android:background="?android:attr/windowSplashScreenIconBackgroundColor"
+        android:contentDescription="@string/app_name"
+        android:ellipsize="start"
+        android:insetBottom="6dp"
+        android:onClick="analyse"
+        android:paddingLeft="16dp"
+        app:icon="@android:drawable/ic_menu_search"
+        app:iconPadding="50dp"
+        app:iconTint="@color/black"
+        app:iconTintMode="src_in"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/pasek"
+        android:layout_width="317dp"
+        android:layout_height="8dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="152dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/screen_background_dark" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="104dp"
+        android:text="Title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/prop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="168dp"
+        android:text="Properties"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
