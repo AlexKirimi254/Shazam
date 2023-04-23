@@ -56,5 +56,22 @@ pasują do utworu jest podobna w kilku przypadkach).
 Przetworzone utwory przechowywano w relacyjnej bazie danych.
 
 System obsługuje 2 metody rozpoznawania utworów. Pierwszy jest to system działający w Javie, który jest w stanie rozpoznawać zapisane w utowry w trybie offline. Drugim
-systemem jest sytem bazo-danowy, który wykorzystuje mechanizmy opisane powyżej. Jest to podłoże do wprowadzenia aplikacji w tryb offline. Na zasadzie zapamiętywania najpopularniejszych utwór, które potem aplkacja
-będzie w stanie rozpoznać za pomocą zapisanych Hash
+systemem jest sytem bazo-danowy, który wykorzystuje mechanizmy opisane powyżej. Jest to podłoże do wprowadzenia aplikacji w tryb offline. Na zasadzie zapamiętywania najpopularniejszych utwór, które potem aplkacja będzie w stanie rozpoznać za pomocą zapisanych Hash. Bazy danych dzięki wbudowanym mechanizmom pozwalają na szybsze wykonywanie operacji na dużych zbiorach danych niż metody alternatywne (np. przeszukiwanie plików), stąd cały wysiłek wyszukiwania utworów na podstawie przetworzonych danych spoczywa na bazie danych.
+
+Aby ograniczyć ilość transmitowanych danych wysyłąne są jedynie hasze, stąd dane są przetwarzane na sprzęcie nasłuchującym (wykonwywany jest tam spektrogram i wyszukiwane są punkty kluczowe które są łączone w hasze.
+
+# Przykład działania aplikacji
+
+Po uruchomieniu aplikacji mamy możliwość wciśnięcia przycisku z lupką. Po jej wciśnięciu uruchamia się proces 10 sekundowego nasłuchiwania tła wokół telefonu.
+
+<p align='center'>
+<img src="https://github.com/mpdg837/ShazamApp/blob/master/s1.png"  width="300" height="600">
+</p>
+
+Utwór bo zakończeniu nasłuchiwania jest przetwarzany do postaci punktów kluczowych. Po tym następuje wysłanie żądania do bazy, po czym otrzymujemy odpowiedź gdzie program wypsuje nazwę utworu z autorem itd.
+
+<p align='center'>
+<img src="https://github.com/mpdg837/ShazamApp/blob/master/s2.png"  width="300" height="600">
+</p>
+
+Program w wersji beta.
