@@ -1,6 +1,11 @@
 # ShazamApp
-Celem projektu było stworzenie aplikacji moblilnej rozpozającej utwory muzyczne (na wzór słynnego Shazama). Należało stowrzyć połączenie z serwerem bazodanowym na którym przechowywane były stosownie
-przetworzone utowry przystosowane do szybkiego rozpoznawania ich. Miało to na celu rozwinięcie umiejętnętności programowanie aplikacji mobilnych (dla środowiska Android Studio).
+
+<p align='center'>
+<img src="https://github.com/mpdg837/ShazamApp/blob/master/przetwarzanie.png"  width="700" height="300">
+</p>
+
+Celem projektu było stworzenie aplikacji moblilnej rozpozającej utwory muzyczne (na wzór słynnego Shazama). Należało stowrzyć połączenie z serwerem bazodanowym na którym przechowywane były stosownie
+przetworzone utowry przystosowane do szybkiego rozpoznawania ich. Miało to na celu rozwinięcie umiejętnętności programowanie aplikacji mobilnych (dla środowiska Android Studio).
 
 # Proces rozpoznawanie dźwięku
 
@@ -15,15 +20,25 @@ nagrania uzyskiwano akceptowalną precyzję wykryć
 ## Proces przetwarzania dźwięku
 
 Aby utwór można bylo rozpoznać oraz zapisać utwór do postaci takiej, aby rozpoznanie późniejsze tego
-utworu było szybsze należy stosowanie przetworzyć nagranie dźwiękowe, aby pozbawić go niepotrzebnych z perspektywy rozpoznawania utowru, zarówno dla człowieka a zatem i komputera informacji. Człowiek zapapmietuje
+utworu było szybsze należy stosowanie przetworzyć nagranie dźwiękowe, aby pozbawić go niepotrzebnych z perspektywy rozpoznawania utowru, zarówno dla człowieka a zatem i komputera informacji. Człowiek zapapmietuje
 tylko kluczowe informacje więc taka redukcja jest potrzebna. Poza tym rozpoznanie za pomocą mniejszej ilości
 informacji jest szybsze dla komputera. Program wiec wykonywał poniższe operacje:
 
 * Generowanie spektorgramu aby uzyskać wykres częstotliwości w funkcji czasu (za pomocą tzw. transformaty FFT)
-* Uzyskiwanie punktów kluczowych aby wydobyć tylko naistotniejsze punkty spektrogramu, które są
-* Charakterystyczne dla tego utworu (aby np. pozbyć się wpływu szumu itp.)
+<p align='center'>
+<img src="https://github.com/mpdg837/ShazamApp/blob/master/spect5.png"  width="700" height="300">
+</p>
+
+* Uzyskiwanie punktów kluczowych aby wydobyć tylko naistotniejsze punkty spektrogramu, które są charakterystyczne dla tego utworu (aby np. pozbyć się wpływu szumu itp.)
+<p align='center'>
+<img src="https://github.com/mpdg837/ShazamApp/blob/master/keypoints.png"  width="700" height="300">
+</p>
+
 * Generowanie na podstawie punktów kluczowych par tzw. hashpoints. (aby uniezależnić ropzoznanie utowru
 od momentu rozpoczęcia nagrywania dźwięku w tle).
+<p align='center'>
+<img src="https://github.com/mpdg837/ShazamApp/blob/master/hashe.png"  width="400" height="300">
+</p>
 
 Procesy te dają finalnie zbiór tzw. <i>hashpoints</i> które są finalna formą prztworzonego utworu, dzięki któemu
 możliwe jest rozpoznawanie jego spośród innych.
